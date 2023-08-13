@@ -1,0 +1,28 @@
+name: Merge upstream branches
+on:
+  schedule:
+    - cron: '0 9 * * *'
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Merge upstream
+        run: |
+          git config --global user.name 'Watout'
+          git config --global user.email 'g1040430413@163.com'
+
+          git pull --unshallow
+
+          git remote add upstream https://github.com/tyIceStream/zodgame_checkin.git # Change the repository URL
+          git fetch upstream
+
+          git checkout -b main origin/main # Change the branch name
+          git merge --no-edit upstream/main
+          git push origin main
+
+          git checkout master
+          git merge --no-edit upstream/master
+          git push origin master
+
+          # etc
